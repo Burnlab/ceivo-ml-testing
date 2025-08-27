@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import boto3
 
+
 def detect_image_format(path: Path) -> str:
     ext = path.suffix.lower().lstrip(".")
     return "jpeg" if ext == "jpg" else ext
@@ -81,7 +82,7 @@ def random_image_path(folder):
 
 def test_prompt(prompt, image_path):
     model_ids = [
-        "gpt-5"
+        "us.anthropic.claude-opus-4-1-20250805-v1:0"
     ]
     image_format = detect_image_format(image_path)
     image_bytes = load_image_bytes(image_path)
@@ -154,6 +155,7 @@ if __name__ == "__main__":
     for image_path in Path(image_folder).iterdir():
         if image_path.is_file():
             json_results.append(test_prompt(prompt, image_path))
+        print(json_results)
 
     with open("output.json", "w", encoding="utf-8") as f:
        json.dump(json_results, f, ensure_ascii=False, indent=2)
